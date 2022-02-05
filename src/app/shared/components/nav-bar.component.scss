@@ -1,0 +1,18 @@
+.nav-bar {
+    width: auto;
+    padding: 20 px 0;
+    display: flex;
+    justify-content: flex-end;
+
+
+    a {
+        padding: 0 10px;
+        text-decoration: none;
+        border: 1px solid black;
+    }
+
+    a:hover {
+        text-decoration: underline;
+        color: red;
+    }
+}
