@@ -1,4 +1,4 @@
-<section class="pizza-list">
+<section class="pizzas-list">
     <div class="pizzas-list-item" *ngFor="let pizza of pizzas$ | async">
         <p [class.pizzas-list-item_size]="pizza.toppings.length">
             {{ pizza.size }}

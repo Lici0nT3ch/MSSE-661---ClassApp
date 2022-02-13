@@ -14,22 +14,22 @@ app.use(cookieParser());
 
 const pizzaService = new PizzasService();
 
-app.get('/api/pizzas', (req: any, res: any) => {
+app.get('/api/pizzas', (req, res) => {
     const pizzas = pizzaService.getCreatedPizzas();
     res.send({
         msg: 'Found Pizzas',
-        pizzas
-    })
+        pizzas,
+    });
 });
 
-app.get('/api/pizzas/presets', (req: any, res: any) => {
+app.get('/api/pizzas/presets', (req, res) => {
     const pizzas = pizzaService.getPizzaPresets();
     res.send({
         msg: 'Found Pizza presets',
-        pizzas
-    })
+        pizzas,
+    });
 });
 
 app.listen(PORT, () => {
-    console.log('Server is running at http://localhost:${PORT}')
+    console.log(`Server is running at http://localhost:${PORT}`);
 });

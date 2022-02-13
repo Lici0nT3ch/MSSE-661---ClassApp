@@ -6,6 +6,6 @@ export interface Pizza {
     toppings: string[]
 }
 
-export type PizzaEntity = {
+export interface PizzaEntity extends Pizza{
     id: string;
-} & Pizza;
+} 

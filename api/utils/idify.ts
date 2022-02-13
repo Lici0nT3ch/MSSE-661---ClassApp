@@ -11,5 +11,5 @@ export const idify = <T, R extends Accumilator<T>(array: T[]) =>
             ...val,
         } as R);
 
-        return acc
+        return acc;
     }, []);

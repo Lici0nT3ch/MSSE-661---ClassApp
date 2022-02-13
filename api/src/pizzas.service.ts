@@ -13,8 +13,8 @@ export class PizzaService {
         return this.pizzas;
     }
 
-    gerCreatedPizza(id: string): PizzaEntity {
-        const pizza = this.pizas.find(pizza ==> pizza.id === id)
+    getCreatedPizza(id: string): PizzaEntity {
+        const pizza = this.pizzas.find((pizza) => pizza.id === id);
 
         if(!pizza) {
             throw new Error('Pizza not found')
