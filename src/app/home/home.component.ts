@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
-import { PizzasService } from "../shared/services/pizza.service";
+import { ActivatedRoute } from '@angular/router';
+import { pluck } from 'rxjs';
+
 
 @Component({
     selector: 'app-home',
@@ -8,7 +10,7 @@ import { PizzasService } from "../shared/services/pizza.service";
 })
 
 export class HomeComponent {
-    readonly pizzas$ = this.pizzasService.getPizzaPresets();
+    readonly pizzas$ = this.activatedRoute.data.pipe(pluck('pizza'));
 
-    constructor(private pizzasService: PizzasService) {};
+    constructor(private activatedRoute: ActivatedRoute) {};
 }
