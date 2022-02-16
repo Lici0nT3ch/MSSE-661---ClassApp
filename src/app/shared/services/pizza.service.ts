@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { PizzaEntity } from '../../../../api/lib/api-interfaces';
+import { PizzaEntity } from '../../../../api/lib/api-interface';
 import { Observable, map } from 'rxjs';
 
 interface PizzaResponse {
