@@ -1,26 +1,34 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, map, Observable, shareReplay, tap } from 'rxjs';
 import { PizzaResponse, PizzasService } from './pizza.service';
+import { PizzaEntity } from 'api/lib/api-interface';
 
 
 @Injectable({providedIn: 'root'})
 
 export class PizzasStateService {
     private readonly pizzas = new BehaviorSubject<PizzaEntity[]>([]);
-    readonly pizzas$ = this.pizzas.asObervable();
+    readonly pizzas$ = this.pizzas.asObservable();
 
     constructor(private pizzasService: PizzasService) {
         this.loadPizzaPreset().subscribe();
     }
 
     loadPizzaPreset(): Observable<PizzaEntity[]> {
-        return this.pizzasService
-        .getPizzaPresets()
-        .pipe(map((data: PizzaResponse) => data.pizzas),
-        tap(pizzas => {
+        return this.pizzasService.getPizzaPresets().pipe
+        (map((data: PizzaResponse) => data.pizzas),
+        tap((pizzas) => {
             this.pizzas.next(pizzas);
         }),
-        shareReplay(1);
+        shareReplay(1)
         );
+    }
+
+    createPizzas(pizzas: Pizza[]) {
+        const newPizzas = pizzas.map(pizza => ({
+            ...pizza,
+            id: '1234'
+        }))
+        this.pizzas.next(newPizzas);
     }
 }

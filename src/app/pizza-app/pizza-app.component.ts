@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { AbstractControl, FormBuilder, FormArray, FormGroup, Validators } from '@angular/forms';
 import { Pizza } from 'api/lib/api-interface';
+import { PizzasStateService } from '../shared/services/pizza-state.service';
 import { map, startWith } from 'rxjs';
 
 type PizzaPrice = {
@@ -40,7 +41,7 @@ total$ = this.pizzas.valueChanges.pipe(
     map(() => this.calculateTotal(this.pizzas.value))
 )
     
-constructor(private fb: FormBuilder) {}
+constructor(private fb: FormBuilder, private pizzasStateService: PizzasStateService ) {}
 
     createPizza() {
         return this.fb.group({
@@ -67,5 +68,16 @@ constructor(private fb: FormBuilder) {}
             return acc = price.base + price.toppings * next.toppings.length
         }, 0);
         return price.toFixed(2);
+    }
+
+    onSubmit(event: any){
+        console.log(event)
+        const { pizzas } = this.pizzaForm.value;
+        console.log(pizzas);
+        const newPizzas = pizzas.map(pizza => ({
+            ...pizza,
+            id: '1234'
+        }))
+        this.pizzasStateService.createPizza();
     }
 }

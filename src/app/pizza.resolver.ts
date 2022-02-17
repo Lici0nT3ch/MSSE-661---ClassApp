@@ -10,7 +10,7 @@ export class PizzaResolver implements Resolve<PizzaEntity[]> {
     resolve(route: ActivatedRouteSnapshot): Observable<PizzaEntity[]> {
         return this.pizzasStateService.pizzas$.pipe(
             filter((pizzas) => !!pizza.length),
-            take(1);
+            take(1)
         );
     }
 
