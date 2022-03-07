@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { pluck } from 'rxjs';
 import { PizzasState, selectPizzas } from "../pizza-app/state";
 
 

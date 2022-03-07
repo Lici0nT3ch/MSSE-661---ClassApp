@@ -2,14 +2,14 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './home/home.component';
 import { PizzaAppComponent } from './pizza-app/pizza-app.component';
-import { PizzaResolver } from './pizza.resolver';
+import { PizzasResolver } from './pizza.resolver';
 
 const routes: Routes = [
   {
     path: '',
     component: HomeComponent,
     resolve: {
-      pizzas: PizzaResolver,
+      pizzas: PizzasResolver,
     },
   },
   {

@@ -1,14 +1,16 @@
 import { createAction, props } from "@ngrx/store";
-import { Pizza, PizzaEntity } from "api/lib/api-interfaces";
-import { PizzaForm } from "src/app/shared/services/pizzas.service";
+import { Pizza, PizzaEntity } from "../../../../api/lib/api-interface";
+import { PizzaForm } from "../../shared/services/pizza.service";
 
 export const loadPizzaPresets = createAction('[Pizzas] Load Pizzas');
 
-export const loadPizzaPresetsSuccess = createAction('[Pizzas] Load Pizzas Success',
-  props<{ pizzas: PizzaEntity[]}>()
+export const loadPizzaPresetsSuccess = createAction(
+  '[Pizzas] Load Pizzas Success',
+  props<{ pizzas: PizzaEntity[] }>()
 );
 
-export const loadPizzaPresetsFailure = createAction('[Pizzas] Load Pizzas Failure',
+export const loadPizzaPresetsFailure = createAction(
+  '[Pizzas] Load Pizzas Failure',
   props<{ error: any }>()
 );
 

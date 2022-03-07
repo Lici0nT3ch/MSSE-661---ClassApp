@@ -1,5 +1,5 @@
 import { Action, createFeature, createReducer, on } from "@ngrx/store";
-import { PizzaEntity } from "api/lib/api-interfaces";
+import { PizzaEntity } from "../../../../api/lib/api-interface";
 import { loadPizzaPresets, loadPizzaPresetsFailure, loadPizzaPresetsSuccess, savePizzasSuccess } from ".";
 
 export interface PizzasState {
@@ -29,14 +29,9 @@ const pizzasFeature = createFeature({
       ...state,
       pizzas: [...state.pizzas, ...pizzas],
       loading: false,
-    })),
+    }))
   ),
 });
 
-export const {
-  name,
-  reducer,
-  selectPizzas,
-  selectPizzasState,
-  selectLoading
-} = pizzasFeature;
+export const { name, reducer, selectPizzas, selectPizzasState, selectLoading } =
+  pizzasFeature;
