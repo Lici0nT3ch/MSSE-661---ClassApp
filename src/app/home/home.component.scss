@@ -1,25 +1,30 @@
 .pizzas-list {
   display: flex;
-  flex-direction: column;
-
+  flex-direction: row;
+  flex-wrap: wrap;
+  flex-grow: 1;
+  
   &-item {
-    padding: 15px;
-    margin-bottom: 10px;
-    border: 0.5px solid rgb(0 0 0 / 12%);
-    border-radius: 9px;
-
-    &__size {
-      margin-bottom: 10px;
-    }
-
+    padding: 10px;
+    margin: 5px;
+    border: 2px solid black;
+    border-radius: 8px;
+    background-color: #D3D3D3;
+    font-size: 2rem;
+    
     &__toppings {
-      border: 0.5px solid rgb(255 0 0 / 50%);
-      border-radius: 10px;
-      padding: 3px 7px;
-      margin-right: 10px;
-      font-size: 16px;
-      background-color: rgb(255 0 0 / 12%);
-      color: red;
+      border: 2px solid black;
+      border-radius: 8px;
+      padding: 5px;
+      background-color: #d9603b;
+      margin-left: 3px;
+      font-size: 12px;
     }
   }
+
+  &-item:hover {
+    background-color: #ffcccb;
+    cursor: pointer;
+  }
+
 }

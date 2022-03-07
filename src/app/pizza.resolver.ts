@@ -1,18 +1,23 @@
-import { Injectable }  from '@angular/core';
-import { Resolve, ActivatedRouteSnapshot } from '@angular/router';
-import { PizzaEntity } from 'api/lib/api-interface';
-import { Observable, filter, take } from 'rxjs';
-import { PizzasStateService } from './shared/services/pizza-state.service';
+import { Injectable } from "@angular/core";
+import { ActivatedRouteSnapshot, Resolve } from "@angular/router";
+import { Store } from "@ngrx/store";
+import { PizzaEntity } from "api/lib/api-interfaces";
+import { filter, Observable, take, tap } from "rxjs";
+import { loadPizzaPresets, PizzasState, PizzasViewModel, selectPizzasViewModel } from "./pizza-app/state";
 
-@Injectable ({ providedIn: 'root'})
+@Injectable({providedIn: 'root'})
+export class PizzasResolver implements Resolve<PizzasViewModel> {
+  resolve(route: ActivatedRouteSnapshot): Observable<PizzasViewModel> {
+    return this.store.select(selectPizzasViewModel).pipe(
+      tap(vm => {
+        if(vm && !vm.pizzas.length) {
+          this.store.dispatch(loadPizzaPresets())
+        }
+      }),
+      filter(vm => !!vm.pizzas.length), take(1)
+    )
+  }
 
-export class PizzaResolver implements Resolve<PizzaEntity[]> {
-    resolve(route: ActivatedRouteSnapshot): Observable<PizzaEntity[]> {
-        return this.pizzasStateService.pizzas$.pipe(
-            filter((pizzas) => !!pizza.length),
-            take(1)
-        );
-    }
+  constructor(private store: Store<PizzasState>) {};
 
-    constructor(private pizzasStateService: PizzasStateService) {}
 }

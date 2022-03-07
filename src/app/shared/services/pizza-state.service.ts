@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, map, Observable, shareReplay, tap } from 'rxjs';
 import { PizzaResponse, PizzasService } from './pizza.service';
-import { PizzaEntity } from 'api/lib/api-interface';
+import { Pizza, PizzaEntity } from 'api/lib/api-interface';
 
 
 @Injectable({providedIn: 'root'})
@@ -9,6 +9,10 @@ import { PizzaEntity } from 'api/lib/api-interface';
 export class PizzasStateService {
     private readonly pizzas = new BehaviorSubject<PizzaEntity[]>([]);
     readonly pizzas$ = this.pizzas.asObservable();
+
+    get pizzaValues(): PizzaEntity[]{
+        return this.pizzas.getValue();
+    }
 
     constructor(private pizzasService: PizzasService) {
         this.loadPizzaPreset().subscribe();
@@ -28,7 +32,7 @@ export class PizzasStateService {
         const newPizzas = pizzas.map(pizza => ({
             ...pizza,
             id: '1234'
-        }))
-        this.pizzas.next(newPizzas);
+        }));
+        this.pizzas.next([...this.pizzaValues, ...newPizzas]);
     }
 }

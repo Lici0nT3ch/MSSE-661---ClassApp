@@ -1,83 +1,80 @@
-import { Component } from '@angular/core';
-import { AbstractControl, FormBuilder, FormArray, FormGroup, Validators } from '@angular/forms';
-import { Pizza } from 'api/lib/api-interface';
-import { PizzasStateService } from '../shared/services/pizza-state.service';
-import { map, startWith } from 'rxjs';
+import { Component } from "@angular/core";
+import { AbstractControl, FormArray, FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { Store } from "@ngrx/store";
+import { Pizza } from "api/lib/api-interfaces";
+import { startWith, map } from "rxjs";
+import { PizzasStateService } from "../shared/services/pizzas-state.service";
+import { PizzasState, savePizzas } from "./state";
 
 type PizzaPrice = {
-    [size: string]: {
-        base: number;
-        size: number;
-        toppings: number;
-    }
+  [size: string]: {
+    base: number;
+    size: number;
+    toppings: number;
+  }
 }
 
 @Component({
-    selector: 'app-pizza-app',
-    templateUrl: './pizza-app.component.html',
-    styleUrls: ['./pizza-app.component.scss'],
+  selector: 'app-pizza-app',
+  templateUrl: './pizza-app.component.html',
+  styleUrls: ['./pizza-app.component.scss'],
 })
 
 export class PizzaAppComponent {
-    activePizza = 0;
-    
-    prices: PizzaPrice = {
-        small: { base: 9.99, size: 10, toppings: 0.69 },
-        medium: { base: 11.99, size: 12, toppings: 0.99 },
-        large: { base: 13.99, size: 14, toppings: 1.29 },
-        'x-large': { base: 15.99, size: 16, toppings: 1.59 }
-    }
+  activePizza = 0;
 
-pizzaForm = this.fb.group({
+  prices: PizzaPrice = {
+    small: { base: 9.99, size: 10, toppings: 0.69 },
+    medium: { base: 11.99, size: 12, toppings: 0.99 },
+    large: { base: 13.99, size: 14, toppings: 1.29 },
+    'x-large': { base: 15.99, size: 16, toppings: 1.59 },
+  }
+
+  pizzaForm = this.fb.group({
     pizzas: this.fb.array([this.createPizza()]),
-});
+  });
 
-get pizzas(): FormArray {
+  get pizzas(): FormArray {
     return this.pizzaForm.get('pizzas') as FormArray;
-}
+  }
 
-total$ = this.pizzas.valueChanges.pipe(
+  total$ = this.pizzas.valueChanges.pipe(
     startWith(this.calculateTotal(this.pizzas.value)),
     map(() => this.calculateTotal(this.pizzas.value))
-)
-    
-constructor(private fb: FormBuilder, private pizzasStateService: PizzasStateService ) {}
+  )
 
-    createPizza() {
-        return this.fb.group({
-            size: ['small', Validators.required],
-            toppings: [[]],
-        });
-    }
+  constructor(private fb: FormBuilder, private store: Store<PizzasState>) {}
 
-    addPizza(){
-        this.pizzas.push(this.createPizza());
-    }
+  createPizza() {
+    return this.fb.group({
+      size: ['small', Validators.required],
+      toppings: [[]],
+    });
+  }
 
-    removePizza(index: number){
-        this.pizzas.removeAt(index);
-    }
+  addPizza() {
+    this.pizzas.push(this.createPizza());
+  }
 
-    togglePizza(index: number) {
-        this.activePizza = index;
-    }
+  removePizza(index: number) {
+    this.pizzas.removeAt(index);
+  }
 
-    calculateTotal(value: Pizza[]): string {
-        const price = value.reduce((acc: number, next: Pizza) => {
-            const price = this.prices[next.size];
-            return acc = price.base + price.toppings * next.toppings.length
-        }, 0);
-        return price.toFixed(2);
-    }
+  togglePizza(index: number) {
+    this.activePizza = index;
+  }
 
-    onSubmit(event: any){
-        console.log(event)
-        const { pizzas } = this.pizzaForm.value;
-        console.log(pizzas);
-        const newPizzas = pizzas.map(pizza => ({
-            ...pizza,
-            id: '1234'
-        }))
-        this.pizzasStateService.createPizza();
-    }
+  calculateTotal(value: Pizza[]): string {
+    const price = value.reduce((acc: number, next: Pizza) => {
+      const price = this.prices[next.size];
+      return acc = price.base + price.toppings * next.toppings.length
+    }, 0);
+    return price.toFixed(2);
+  }
+
+  onSubmit(event: any) {
+    console.log(event);
+    const { pizzas } = this.pizzaForm.value;
+    this.store.dispatch(savePizzas({ pizzas }));
+  };
 }
